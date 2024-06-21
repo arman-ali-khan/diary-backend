@@ -1,0 +1,19 @@
+[{
+    "id":1,
+    "title":"hello world",
+    "createdAt":"",
+    "read":[{"id":1},{"id":2}],
+    "rating":"",
+    "thumbnail":"",
+    "cover":"",
+    "subsceribers":[{"id":1},{"id":2}],
+    "likes":[{"id":1},{"id":2}],
+    "tags":[{"id":1},{"id":2}],
+    "parts":[{"id":1},{"id":2}],
+    "description":"",
+    "author":[{"id":1},{"id":2}],
+    "reports":[],
+    "blocked":[],
+    "comments":[{"id":1},{"id":2}],
+    "isPublished":1
+}]
