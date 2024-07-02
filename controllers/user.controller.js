@@ -99,7 +99,6 @@ exports.login = async(req, res) => {
       bcrypt.compare(user?.password, dbUser?.password, function(err, result) {
         if(result===true){
           const token =  jwt.sign({ email: user.email }, 'your_jwt_secret', { expiresIn: '1y' });
-
           return res.status(200).send({userResult,token})
         }else{
           return res.status(500).send({
