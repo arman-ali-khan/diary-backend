@@ -23,6 +23,7 @@ const User = {
     });
   },
 
+
   findById: (id, result) => {
     db.query('SELECT * FROM users WHERE id = ?', [id], (err, res) => {
       if (err) {
@@ -37,6 +38,7 @@ const User = {
       result({ kind: "not_found" }, null);
     });
   },
+  
   findByEmail: (email, result) => {
     db.query('SELECT * FROM users WHERE email = ?', [email], (err, res) => {
       if (err) {

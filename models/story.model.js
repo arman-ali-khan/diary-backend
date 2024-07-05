@@ -12,19 +12,59 @@ const Story = {
     });
   },
 
-  create: (newStory, result) => {
-    db.query('INSERT INTO stories SET ?', newStory, (err, res) => {
+  createOrUpdate: (story, result) => {
+    const query = `
+      INSERT INTO stories (storyId, title, description)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        title = VALUES(title),
+        description = VALUES(description)
+    `;
+
+    db.query(query, [story.storyId, story.title, story.description], (err, res) => {
       if (err) {
         console.log("Error: ", err);
         result(null, err);
         return;
       }
-      result(null, { id: res.insertId, ...newStory });
+
+      if (res.insertId) {
+        // Inserted new story
+        result(null, { id: res.insertId, ...story });
+      } else {
+        // Updated existing story
+        result(null, { id: story.storyId, ...story });
+      }
     });
   },
 
+  createPart: (part, result) => {
+    db.query('INSERT INTO storyParts SET ?', part, (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(null, err);
+        return;
+      }
+      result(null, { id: res.insertId, ...part });
+    });
+  },
+
+  findPartsById: (id, result) => {
+    db.query('SELECT * FROM storyParts WHERE storyId = ?', [id], (err, res) => {
+      if (err) {
+        console.log("Error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.length) {
+        result(null, res);
+        return;
+      }
+      result({ kind: "not_found" }, null);
+    });
+  },
   findById: (id, result) => {
-    db.query('SELECT * FROM stories WHERE id = ?', [id], (err, res) => {
+    db.query('SELECT * FROM stories WHERE storyId = ?', [id], (err, res) => {
       if (err) {
         console.log("Error: ", err);
         result(null, err);
