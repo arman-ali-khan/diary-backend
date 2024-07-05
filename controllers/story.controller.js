@@ -17,14 +17,26 @@ exports.create = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-console.log(req.body,'body story');
+  
   const story = {
     title: req.body.title,
     description: JSON.stringify(req.body.description),
-    storyId:req.body.storyId
+    storyId:req.body.storyId,
+    thumbnail:req.body.thumbnail,
+    read:req.body.rating,
+    rating:req.body.rating,
+    subscribers:req.body.subscribers,
+    likes:req.body.likes,
+    tags:req.body.tags,
+    categories:req.body.categories,
+    author:req.body.author,
+    reports:req.body.reports,
+    blocked:req.body.blocked,
+    published:req.body.published,
   };
 
   Story.createOrUpdate(story, (err, data) => {
+    console.log(data,'data');
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while creating the User."

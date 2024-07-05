@@ -14,14 +14,15 @@ const Story = {
 
   createOrUpdate: (story, result) => {
     const query = `
-      INSERT INTO stories (storyId, title, description)
-      VALUES (?, ?, ?)
+      INSERT INTO stories (storyId, title, description,thumbnail)
+      VALUES (?, ?, ?,?)
       ON DUPLICATE KEY UPDATE
         title = VALUES(title),
-        description = VALUES(description)
+        description = VALUES(description),
+        thumbnail = VALUES(thumbnail)
     `;
 
-    db.query(query, [story.storyId, story.title, story.description], (err, res) => {
+    db.query(query, [story.storyId, story.title, story.description,story.thumbnail], (err, res) => {
       if (err) {
         console.log("Error: ", err);
         result(null, err);
