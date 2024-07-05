@@ -56,8 +56,7 @@ exports.createPart = (req, res) => {
 };
 
 exports.findOne = (req, res) => {
-  console.log(req.params.id,'req.params.id')
-    Story.findById(req.params.id, (err, data) => {
+  Story.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
@@ -72,20 +71,19 @@ exports.findOne = (req, res) => {
       Story.findPartsById(req.params.id, (err,partsData)=>{
         if (err) {
           if (err.kind === "not_found") {
-            res.status(404).send({
-              message: `Not found User with id ${req.params.id}.`
-            });
+            res.send(data)
           } else {
             res.status(500).send({
               message: "Error retrieving User with id " + req.params.id
             });
           }
         }else{
-          const storyDataWithParts = {...data,parts:partsData}
+          const storyDataWithParts = {...data,parts:partsData||''}
           res.send(storyDataWithParts)
-        }
-      })
-      
+        return  
+      }
+    })
+    
     };
   });
 };
