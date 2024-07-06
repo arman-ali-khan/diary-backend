@@ -5,6 +5,8 @@ module.exports = (app) => {
 
   router.put("/", story.create);
   router.post("/part", story.createPart);
+  router.put("/part/:id", story.updatePart);
+  router.get("/part/:id", story.findOnePart);
   router.get("/", story.findAll);
   router.get("/:id", story.findOne);
 

@@ -17,7 +17,7 @@ exports.create = (req, res) => {
       message: "Content can not be empty!"
     });
   }
-  
+  console.log(req.body,'req.body');
   const story = {
     title: req.body.title,
     description: JSON.stringify(req.body.description),
@@ -27,8 +27,8 @@ exports.create = (req, res) => {
     rating:req.body.rating,
     subscribers:req.body.subscribers,
     likes:req.body.likes,
-    tags:req.body.tags,
-    categories:req.body.categories,
+    tags:JSON.stringify(req.body.tags),
+    categories:JSON.stringify(req.body.categories),
     author:req.body.author,
     reports:req.body.reports,
     blocked:req.body.blocked,
@@ -67,6 +67,24 @@ exports.createPart = (req, res) => {
   });
 };
 
+exports.updatePart = (req,res)=>{
+  Story.updatePartById(req.params.id,req.body,(err,data)=>{
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found User with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving User with id " + req.params.id
+        });
+      }
+    }else{
+      res.send(data)
+    }
+  })
+}
+
 exports.findOne = (req, res) => {
   Story.findById(req.params.id, (err, data) => {
     if (err) {
@@ -96,6 +114,37 @@ exports.findOne = (req, res) => {
       }
     })
     
+    };
+  });
+};
+exports.findOnePart = (req, res) => {
+  const {partId} = req.query
+  console.log(req.query);
+  Story.findPartsById(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found User with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving User with id " + req.params.id
+        });
+      }
+    } else {
+     Story.findPartById(partId,(err,data)=>{
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found User with id ${partId}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error retrieving User with id " + partId
+          });
+        }
+      } else {res.send(data)}
+     })
     };
   });
 };
