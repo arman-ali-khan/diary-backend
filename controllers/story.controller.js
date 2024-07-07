@@ -12,12 +12,12 @@ exports.findAll = (req, res) => {
 };
 
 exports.create = (req, res) => {
+  const user = req.user
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
   }
-  console.log(req.body,'req.body');
   const story = {
     title: req.body.title,
     description: JSON.stringify(req.body.description),
@@ -33,6 +33,7 @@ exports.create = (req, res) => {
     reports:req.body.reports,
     blocked:req.body.blocked,
     published:req.body.published,
+    author:user?.email
   };
 
   Story.createOrUpdate(story, (err, data) => {

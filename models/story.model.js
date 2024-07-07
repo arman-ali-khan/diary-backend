@@ -1,4 +1,5 @@
 const db = require("../config/db.config");
+const { updatePart } = require("../controllers/story.controller");
 
 const Story = {
   getAll: (result) => {
@@ -13,15 +14,17 @@ const Story = {
   },
 
   createOrUpdate: (story, result) => {
+    console.log(story,'story');
     const query = `
-      INSERT INTO stories (storyId, title, description,thumbnail,tags,categories)
-      VALUES (?, ?, ?,?,?,?)
+      INSERT INTO stories (storyId, title, description,thumbnail,tags,categories,author)
+      VALUES (?, ?, ?,?,?,?,?)
       ON DUPLICATE KEY UPDATE
         title = VALUES(title),
         description = VALUES(description),
         categories = VALUES(categories),
         tags = VALUES(tags),
-        thumbnail = VALUES(thumbnail)
+        thumbnail = VALUES(thumbnail),
+        author = VALUES(author)
     `;
 
     db.query(
@@ -33,6 +36,7 @@ const Story = {
         story.thumbnail,
         story?.tags,
         story?.categories,
+        story?.author,
       ],
       (err, res) => {
         if (err) {
@@ -67,9 +71,9 @@ const Story = {
     const title = body?.title
     const summary = body?.summary
     const partId = parseInt(id)
-
     // partData
     const partData = {title,summary,description}
+    console.log(partData,'partData');
 
     
   
