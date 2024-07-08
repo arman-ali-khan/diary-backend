@@ -2,10 +2,11 @@ const Story = require("../models/story.model");
 
 
 exports.findAll = (req, res) => {
-  console.log(req.query,'query');
   const query = req.query
   const email = query?.email
-  if(email!=='undefined'){
+  const tag = query?.tag
+  const category = query?.category
+  if(email){
     Story.getAllByEmail(email,(err, data) => {
       if (err)
         res.status(500).send({
@@ -13,17 +14,33 @@ exports.findAll = (req, res) => {
         });
       else res.send(data);
     });
-  }else{
-    // Story.getAll((err, data) => {
-    //   if (err)
-    //     res.status(500).send({
-    //       message: err.message || "Some error occurred while retrieving users."
-    //     });
-    //   else res.send(data);
-    // });
-    res.status(500).send({
-      message: err.message || "Some error occurred while retrieving users."
-    });
+  }
+   if(category){
+    Story.getAll((err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error occurred while retrieving users."
+        });
+      else res.send(data);
+    })
+  }
+   if(tag){
+    Story.getAll((err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error occurred while retrieving users."
+        });
+      else res.send(data);
+    })
+  }
+   if(!email&&!category&&!tag){
+    Story.getAll((err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error occurred while retrieving users."
+        });
+      else res.send(data);
+    })
   }
  
 };
