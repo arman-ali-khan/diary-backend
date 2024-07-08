@@ -13,6 +13,20 @@ const Story = {
     });
   },
 
+  getAllByEmail: (email,result) => {
+    if(email){
+      db.query("SELECT * FROM stories WHERE author = ?", [email], (err, res) => {
+        if (err) {
+          console.log("Error: ", err);
+          result(null, err);
+          return;
+        }
+        result(null, res);
+      });
+    }
+   
+  },
+
   createOrUpdate: (story, result) => {
     console.log(story,'story');
     const query = `

@@ -2,13 +2,30 @@ const Story = require("../models/story.model");
 
 
 exports.findAll = (req, res) => {
-  Story.getAll((err, data) => {
-    if (err)
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users."
-      });
-    else res.send(data);
-  });
+  console.log(req.query,'query');
+  const query = req.query
+  const email = query?.email
+  if(email!=='undefined'){
+    Story.getAllByEmail(email,(err, data) => {
+      if (err)
+        res.status(500).send({
+          message: err.message || "Some error occurred while retrieving users."
+        });
+      else res.send(data);
+    });
+  }else{
+    // Story.getAll((err, data) => {
+    //   if (err)
+    //     res.status(500).send({
+    //       message: err.message || "Some error occurred while retrieving users."
+    //     });
+    //   else res.send(data);
+    // });
+    res.status(500).send({
+      message: err.message || "Some error occurred while retrieving users."
+    });
+  }
+ 
 };
 
 exports.create = (req, res) => {
